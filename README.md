@@ -63,6 +63,22 @@ To run the code:
 ```bash
 go run cmd/main.go
 ```
+Output:
+```bash
+0123 : longest cycle = 1
+0132 : longest cycle = 2
+0213 : longest cycle = 2
+0321 : longest cycle = 2
+1023 : longest cycle = 2
+1032 : longest cycle = 2
+2103 : longest cycle = 2
+2301 : longest cycle = 2
+3120 : longest cycle = 2
+3210 : longest cycle = 2
+Total permutations:  24
+Set free:  10
+Set free percentage:  41.67 %
+```
 
 To change number of prisoners, edit file main.go line 
 ```go
