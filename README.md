@@ -80,7 +80,7 @@ Set free:  10
 Set free percentage:  41.67 %
 ```
 
-To change number of prisoners, edit file main.go line 
+To change number of prisoners, edit the line in file main.go 
 ```go
 func main() {
    crates := 4
