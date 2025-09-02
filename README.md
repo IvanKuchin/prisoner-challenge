@@ -75,6 +75,7 @@ Output:
 2301 : longest cycle = 2
 3120 : longest cycle = 2
 3210 : longest cycle = 2
+
 Total permutations:  24
 Set free:  10
 Set free percentage:  41.67 %
