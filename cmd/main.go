@@ -78,3 +78,4 @@ func main() {
 	println("Set free: ", set_free)
 	println("Set free percentage: ", fmt.Sprintf("%.2f", float64(set_free)/float64(total_permutations)*100), "%")
 }
+
