@@ -1,0 +1,68 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Publish release assets
+
+on:
+  release:
+    types: ['published']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      # write permission is required to create a github release
+      contents: write
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: 1.25.x
+
+    - name: Mod tidy
+      run: go mod tidy
+
+    - name: Linux build
+      run: |
+        go build -o build/prisoner-challenge .
+        cd ./build
+        tar -czf prisoner-challenge-linux-${{ github.event.release.tag_name }}.tar.gz ./prisoner-challenge
+        rm ./prisoner-challenge
+
+    - name: Windows build
+      run: |
+        GOOS=windows GOARCH=amd64 go build -o build/prisoner-challenge.exe .
+        cd ./build
+        zip prisoner-challenge-windows-${{ github.event.release.tag_name }}.zip ./prisoner-challenge.exe
+        rm ./prisoner-challenge.exe
+
+    - name: Darwin build
+      run: |
+        GOOS=darwin GOARCH=amd64 go build -o build/prisoner-challenge .
+        cd ./build
+        tar -czf prisoner-challenge-darwin-${{ github.event.release.tag_name }}.tar.gz ./prisoner-challenge
+        rm ./prisoner-challenge
+
+    - name: Upload release assets
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          build/prisoner-challenge-amd64-darwin-${{ github.event.release.tag_name }}.tar.gz
+          build/prisoner-challenge-amd64-linux-${{ github.event.release.tag_name }}.tar.gz
+          build/prisoner-challenge-amd64-windows-${{ github.event.release.tag_name }}.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload linux artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: prisoner-challenge-linux-${{ github.event.release.tag_name }}.tar.gz
+        path: build/prisoner-challenge-linux-${{ github.event.release.tag_name }}.tar.gz
+
+    - name: Upload windows artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: prisoner-challenge-windows-${{ github.event.release.tag_name }}.zip
+        path: build/prisoner-challenge-windows-${{ github.event.release.tag_name }}.tar.gz
