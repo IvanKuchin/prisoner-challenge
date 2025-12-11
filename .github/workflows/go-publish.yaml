@@ -26,21 +26,21 @@ jobs:
 
     - name: Linux build
       run: |
-        go build -o build/prisoner-challenge .
+        go build -o build/prisoner-challenge cmd/main.go
         cd ./build
         tar -czf prisoner-challenge-linux-${{ github.event.release.tag_name }}.tar.gz ./prisoner-challenge
         rm ./prisoner-challenge
 
     - name: Windows build
       run: |
-        GOOS=windows GOARCH=amd64 go build -o build/prisoner-challenge.exe .
+        GOOS=windows GOARCH=amd64 go build -o build/prisoner-challenge.exe cmd/main.go
         cd ./build
         zip prisoner-challenge-windows-${{ github.event.release.tag_name }}.zip ./prisoner-challenge.exe
         rm ./prisoner-challenge.exe
 
     - name: Darwin build
       run: |
-        GOOS=darwin GOARCH=amd64 go build -o build/prisoner-challenge .
+        GOOS=darwin GOARCH=amd64 go build -o build/prisoner-challenge cmd/main.go
         cd ./build
         tar -czf prisoner-challenge-darwin-${{ github.event.release.tag_name }}.tar.gz ./prisoner-challenge
         rm ./prisoner-challenge
